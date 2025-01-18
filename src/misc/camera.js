@@ -81,9 +81,9 @@ const narrowDownFacingMode = async (camera, deviceId) => {
       case "auto":
         return { facingMode: { ideal: "environment" } };
       case "rear":
-        return { facingMode: { exact: "environment" } };
+        return { facingMode: { ideal: "environment" } };
       case "front":
-        return { facingMode: { exact: "user" } };
+        return { facingMode: { ideal: "user" } };
       default:
         return undefined;
     }

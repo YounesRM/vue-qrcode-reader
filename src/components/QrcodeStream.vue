@@ -151,9 +151,10 @@ export default {
         this.cameraInstance.stop();
       }
 
-
+      const preferredDeviceId = localStorage.getItem("scanner-device-id");
       this.cameraInstance = await Camera(this.$refs.video, {
         camera: this.camera,
+        deviceId: preferredDeviceId,
         torch: this.torch,
       });
 
@@ -176,11 +177,11 @@ export default {
             capabilities: {}
           };
         } else {
-          const preferredDeviceId = localStorage.getItem('scanner-device-id');
+          const preferredDeviceId = localStorage.getItem("scanner-device-id");
           if (preferredDeviceId) {
             this.cameraInstance = await Camera(this.$refs.video, {
               camera: null,
-              preferredDeviceId,
+              deviceId: preferredDeviceId,
               torch: this.torch,
             });
           } else {
@@ -189,7 +190,11 @@ export default {
               torch: this.torch
             });
           }
-          localStorage.setItem('scanner-device-id', this.cameraInstance.stream.getVideoTracks()[0].deviceId);
+          localStorage.setItem(
+            "scanner-device-id",
+            this.cameraInstance.stream.getVideoTracks()[0].getSettings()
+              .deviceId
+          );
           const capabilities = this.cameraInstance.getCapabilities();
 
           // if the component is destroyed before `cameraInstance` resolves a
